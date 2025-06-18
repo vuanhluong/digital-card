@@ -1,45 +1,65 @@
-<!doctype html><html lang="vi">
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Nguyễn An • Công ty ABC</title>
-<style>
-body{font-family:sans-serif;text-align:center;margin:40px}
-.btn{display:inline-block;padding:14px 24px;background:#006aff;color:#fff;
-     border-radius:6px;text-decoration:none;font-weight:600;font-size:16px}
-.btn:hover{background:#0558d7}
-.note{margin-top:10px;font-size:14px;color:#555}
-</style>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nguyễn An - Danh Thiếp</title>
+  <style>
+    /* CSS cơ bản cho giao diện danh thiếp */
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;  /* Nền xám nhạt */
+      color: #333;          /* Chữ xám đậm dễ đọc trên nền sáng */
+      margin: 0;
+      padding: 20px;
+    }
+    .card {
+      max-width: 400px;
+      margin: 10% auto;     /* Căn giữa dọc trang với khoảng cách trên dưới 10% */
+      text-align: center;
+    }
+    .card h1 {
+      font-size: 1.5em;
+      margin-bottom: 0.2em;
+    }
+    .card p {
+      margin: 0.2em 0;
+    }
+    #addContactBtn {
+      margin-top: 1em;
+      padding: 0.6em 1.2em;
+      font-size: 1em;
+      cursor: pointer;      /* Con trỏ chuột dạng pointer khi hover */
+    }
+  </style>
+</head>
+<body>
 
-<a id="addBtn" class="btn">Thêm vào Danh bạ</a>
-<p id="desc" class="note"></p>
+  <div class="card">
+    <!-- Thông tin danh thiếp cơ bản -->
+    <h1>Nguyễn An</h1>
+    <p>Giám đốc</p>
+    <p>Công ty ABC</p>
+    <!-- Nút Thêm vào Danh bạ -->
+    <button id="addContactBtn">Thêm vào Danh bạ</button>
+  </div>
 
-<script>
-const ua = navigator.userAgent;
-const isiOS   = /iPad|iPhone|iPod/i.test(ua);
-const isAndCh = /Android/i.test(ua) && /Chrome|Edg|Brave|OPR|Samsung/i.test(ua);
+  <script>
+    // JavaScript: Xử lý khi nhấn nút "Thêm vào Danh bạ"
+    document.getElementById('addContactBtn').onclick = function() {
+      var ua = navigator.userAgent || navigator.vendor || window.opera;
+      if (/android/i.test(ua)) {
+        // Thiết bị Android: sử dụng Intent URL để mở ứng dụng Danh bạ và thêm liên hệ mới
+        window.location.href = 'intent:#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.dir/contact;S.name=Nguy%E1%BB%85n%20An;S.phone=%2B84901234567;S.email=an.nguyen%40abc.com;S.company=C%C3%B4ng%20ty%20ABC;end';
+      } else if (/iPad|iPhone|iPod/i.test(ua)) {
+        // Thiết bị iOS: mở tệp vCard .vcf (tự động gợi ý thêm vào Danh bạ trên iOS)
+        window.location.href = '/nguyen_an.vcf';
+      } else {
+        // Thiết bị khác hoặc không xác định: mặc định mở (hoặc tải) tệp vCard
+        window.location.href = '/nguyen_an.vcf';
+      }
+    };
+  </script>
 
-const vcfURL  = location.origin + '/nguyen_an.vcf';          // đường dẫn file VCF
-
-if (isAndCh) {
-  /* ---------- Android + Chromium: dùng Intent ---------- */
-  document.getElementById('addBtn').href =
-    'intent://addcontact/#Intent;' +
-    'action=com.android.contacts.action.SHOW_OR_CREATE_CONTACT;' +
-    'scheme=tel;data=+84901234567;' +                    /* Số bắt buộc */
-    'S.name='  + encodeURIComponent('Nguyễn An') + ';' +
-    'S.email=' + encodeURIComponent('an.nguyen@abc.com') + ';' +
-    'package=com.android.contacts;' +                    /* ép mở app Contacts */
-    'browser_fallback_url=' + encodeURIComponent(vcfURL) + ';' +
-    'end';
-  document.getElementById('desc').textContent =
-    'Chrome (Android) sẽ mở cửa sổ “Thêm liên hệ”. Nếu không, bạn vẫn có thể tải file .vcf.';
-} else {
-  /* ---------- iOS & trình duyệt khác: link VCF ---------- */
-  const btn = document.getElementById('addBtn');
-  btn.href = vcfURL;
-  if (!isiOS) btn.setAttribute('download', 'nguyen_an.vcf');   // chỉ gắn download cho Android khác, desktop
-  document.getElementById('desc').textContent =
-    isiOS ? 'Safari sẽ gợi ý “Add to Contacts”.'
-          : 'Sau khi tải xong, hãy mở file để nhập Danh bạ.';
-}
-</script>
+</body>
 </html>
