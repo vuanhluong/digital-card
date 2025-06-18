@@ -1,0 +1,32 @@
+<!doctype html><html lang="vi">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nguyễn An • Công ty ABC</title>
+<style>
+body{font-family:sans-serif;text-align:center;margin:40px}
+.btn{display:inline-block;padding:14px 24px;background:#006aff;color:#fff;
+     border-radius:6px;text-decoration:none;font-weight:600;font-size:16px}
+.btn:hover{background:#0458d7} .note{margin-top:10px;font-size:14px;color:#555}
+</style>
+<a id="addBtn" class="btn">Thêm vào Danh bạ</a>
+<p id="desc" class="note"></p>
+<script>
+const isiOS=/iPad|iPhone|iPod/i.test(navigator.userAgent);
+const isAndCh=/Android/i.test(navigator.userAgent)&&/Chrome|Edg|Brave|OPR|Samsung/i.test(navigator.userAgent);
+const vcfURL=location.origin+'/nguyen_an.vcf';
+if(isAndCh){
+  document.getElementById('addBtn').href=
+   'intent://addcontact/#Intent;action=com.android.contacts.action.SHOW_OR_CREATE_CONTACT;'
+  +'scheme=tel;data=+84901234567;S.name='+encodeURIComponent('Nguyễn An')
+  +';S.email=an.nguyen%40abc.com;package=com.android.contacts;'
+  +'browser_fallback_url='+encodeURIComponent(vcfURL)+';end';
+  document.getElementById('desc').textContent='Chrome sẽ mở cửa sổ “Lưu liên hệ”.';
+}else{
+  const btn=document.getElementById('addBtn');
+  btn.href=vcfURL;
+  if(!isiOS)btn.setAttribute('download','Nguyen_An.vcf');
+  document.getElementById('desc').textContent=
+    isiOS?'Safari sẽ gợi ý “Add to Contacts”.'
+         :'Sau khi tải xong, hãy mở file để nhập danh bạ.';
+}
+</script>
+</html>
