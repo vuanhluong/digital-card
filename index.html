@@ -32,7 +32,6 @@
   <h1>Nguyễn An</h1>
   <p>Giám đốc – Công ty ABC</p>
 
-  <!-- Nút dưới đây là <a> chứ không phải <button> -->
   <a id="add-contact-link" class="btn" target="_blank" rel="noopener noreferrer">Thêm vào Danh bạ</a>
 
   <script>
@@ -46,15 +45,15 @@
     const company = encodeURIComponent("Công ty ABC");
     const title = encodeURIComponent("Giám đốc");
 
-    const intentURL = "intent://#Intent;" +
-                      "action=android.intent.action.INSERT;" +
-                      "type=vnd.android.cursor.dir/contact;" +
-                      `S.name=${name};` +
-                      `S.phone=${phone};` +
-                      `S.email=${email};` +
-                      `S.company=${company};` +
-                      `S.job_title=${title};` +
-                      "end;";
+    const intentURL = "intent://addcontact/#Intent;" +
+      "action=android.intent.action.INSERT;" +
+      "type=vnd.android.cursor.dir/contact;" +
+      `S.name=${name};` +
+      `S.phone=${phone};` +
+      `S.email=${email};` +
+      `S.company=${company};` +
+      `S.job_title=${title};` +
+      "end;";
 
     const fallbackVCF = "nguyen_an.vcf";
 
@@ -65,6 +64,5 @@
       link.href = fallbackVCF;
     }
   </script>
-
 </body>
 </html>
