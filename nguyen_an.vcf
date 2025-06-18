@@ -1,1 +1,12 @@
-
+BEGIN:VCARD
+VERSION:3.0
+N:Nguyễn;An;;;
+FN:Nguyễn An
+ORG:Công ty ABC
+TITLE:Sales Executive
+TEL;TYPE=CELL,VOICE:+84 901 234 567
+EMAIL;TYPE=INTERNET,PREF:an.nguyen@abc.com
+URL:https://abc.com
+ADR;TYPE=WORK:;;123 Nguyễn Trãi;Hà Nội;;100000;VN
+REV:20250618T000000Z
+END:VCARD
