@@ -1,88 +1,70 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nguyễn An - Danh thiếp cá nhân</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nguyễn An - Danh thiếp</title>
   <style>
-    /* Đặt font chữ dễ đọc và căn giữa nội dung */
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      margin: 0;
-      /* Sử dụng flexbox để căn giữa nội dung cả chiều ngang và dọc */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      min-height: 100vh; /* chiếm ít nhất toàn bộ chiều cao màn hình */
+      padding: 50px;
     }
-    h1 {
-      font-size: 2em;
-      margin: 0.2em 0;
+    h1 { margin-bottom: 0.2em; }
+    p { margin-top: 0; color: #555; }
+    a.btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #007bff;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
     }
-    p.info {
-      font-size: 1.2em;
-      margin: 0 0 1.5em 0;
-    }
-    /* Thiết kế nút "Thêm vào Danh bạ" */
-    button {
-      font-size: 1em;
-      padding: 0.5em 1em;
-      border: none;
-      border-radius: 5px;
-      background-color: #007BFF;
-      color: #fff;
-    }
-    button:hover {
+    a.btn:hover {
       background-color: #0056b3;
-      cursor: pointer;
-    }
-    button:focus {
-      outline: none;
     }
   </style>
 </head>
 <body>
-  <!-- Thông tin danh thiếp cá nhân -->
+
   <h1>Nguyễn An</h1>
-  <p class="info">Giám đốc – Công ty ABC</p>
-  <!-- Nút thêm liên hệ vào danh bạ -->
-  <button id="add-contact-btn">Thêm vào Danh bạ</button>
+  <p>Giám đốc – Công ty ABC</p>
+
+  <!-- Nút dưới đây là <a> chứ không phải <button> -->
+  <a id="add-contact-link" class="btn" target="_blank" rel="noopener noreferrer">Thêm vào Danh bạ</a>
 
   <script>
-    // Tự động phát hiện nền tảng và xử lý khi bấm nút "Thêm vào Danh bạ"
-    document.getElementById('add-contact-btn').addEventListener('click', function() {
-      var ua = navigator.userAgent || navigator.vendor || "";
-      var isAndroid = /Android/i.test(ua);
-      var isIOS = /iPhone|iPad|iPod/i.test(ua);
-      var isSamsung = /SamsungBrowser/i.test(ua);
-      var isChrome = /Chrome/i.test(ua);
-      if (isAndroid && (isChrome || isSamsung)) {
-        // Trường hợp thiết bị Android dùng Chrome hoặc Samsung Internet:
-        // Mở ứng dụng Danh bạ thông qua Intent, với thông tin được điền sẵn
-        var name = encodeURIComponent("Nguyễn An");
-        var phone = encodeURIComponent("+84901234567");
-        var email = encodeURIComponent("an.nguyen@abc.com");
-        var company = encodeURIComponent("Công ty ABC");
-        var title = encodeURIComponent("Giám đốc");
-        // Chuỗi URL intent:// để mở màn hình thêm liên hệ với các thông tin trên
-        var intentURL = "intent://#Intent;" +
-                        "action=android.intent.action.INSERT;" +
-                        "type=vnd.android.cursor.dir/contact;" +
-                        "S.name=" + name + ";" +
-                        "S.phone=" + phone + ";" +
-                        "S.email=" + email + ";" +
-                        "S.company=" + company + ";" +
-                        "S.job_title=" + title + ";" +
-                        "end";
-        window.location.href = intentURL;
-      } else {
-        // Trường hợp thiết bị iOS (Safari) hoặc nền tảng khác:
-        // Mở tệp vCard .vcf để thêm liên hệ
-        window.location.href = "nguyen_an.vcf";
-      }
-    });
+    const ua = navigator.userAgent;
+    const isAndroid = /Android/i.test(ua);
+    const isIOS = /iPhone|iPad|iPod/i.test(ua);
+
+    const name = encodeURIComponent("Nguyễn An");
+    const phone = encodeURIComponent("+84901234567");
+    const email = encodeURIComponent("an.nguyen@abc.com");
+    const company = encodeURIComponent("Công ty ABC");
+    const title = encodeURIComponent("Giám đốc");
+
+    const intentURL = "intent://#Intent;" +
+                      "action=android.intent.action.INSERT;" +
+                      "type=vnd.android.cursor.dir/contact;" +
+                      `S.name=${name};` +
+                      `S.phone=${phone};` +
+                      `S.email=${email};` +
+                      `S.company=${company};` +
+                      `S.job_title=${title};` +
+                      "end;";
+
+    const fallbackVCF = "nguyen_an.vcf";
+
+    const link = document.getElementById("add-contact-link");
+    if (isAndroid) {
+      link.href = intentURL;
+    } else {
+      link.href = fallbackVCF;
+    }
   </script>
+
 </body>
 </html>
