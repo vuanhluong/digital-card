@@ -1,65 +1,88 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nguyễn An - Danh Thiếp</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nguyễn An - Danh thiếp cá nhân</title>
   <style>
-    /* CSS cơ bản cho giao diện danh thiếp */
+    /* Đặt font chữ dễ đọc và căn giữa nội dung */
     body {
       font-family: Arial, sans-serif;
-      background: #f9f9f9;  /* Nền xám nhạt */
-      color: #333;          /* Chữ xám đậm dễ đọc trên nền sáng */
-      margin: 0;
-      padding: 20px;
-    }
-    .card {
-      max-width: 400px;
-      margin: 10% auto;     /* Căn giữa dọc trang với khoảng cách trên dưới 10% */
       text-align: center;
+      margin: 0;
+      /* Sử dụng flexbox để căn giữa nội dung cả chiều ngang và dọc */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh; /* chiếm ít nhất toàn bộ chiều cao màn hình */
     }
-    .card h1 {
-      font-size: 1.5em;
-      margin-bottom: 0.2em;
-    }
-    .card p {
+    h1 {
+      font-size: 2em;
       margin: 0.2em 0;
     }
-    #addContactBtn {
-      margin-top: 1em;
-      padding: 0.6em 1.2em;
+    p.info {
+      font-size: 1.2em;
+      margin: 0 0 1.5em 0;
+    }
+    /* Thiết kế nút "Thêm vào Danh bạ" */
+    button {
       font-size: 1em;
-      cursor: pointer;      /* Con trỏ chuột dạng pointer khi hover */
+      padding: 0.5em 1em;
+      border: none;
+      border-radius: 5px;
+      background-color: #007BFF;
+      color: #fff;
+    }
+    button:hover {
+      background-color: #0056b3;
+      cursor: pointer;
+    }
+    button:focus {
+      outline: none;
     }
   </style>
 </head>
 <body>
-
-  <div class="card">
-    <!-- Thông tin danh thiếp cơ bản -->
-    <h1>Nguyễn An</h1>
-    <p>Giám đốc</p>
-    <p>Công ty ABC</p>
-    <!-- Nút Thêm vào Danh bạ -->
-    <button id="addContactBtn">Thêm vào Danh bạ</button>
-  </div>
+  <!-- Thông tin danh thiếp cá nhân -->
+  <h1>Nguyễn An</h1>
+  <p class="info">Giám đốc – Công ty ABC</p>
+  <!-- Nút thêm liên hệ vào danh bạ -->
+  <button id="add-contact-btn">Thêm vào Danh bạ</button>
 
   <script>
-    // JavaScript: Xử lý khi nhấn nút "Thêm vào Danh bạ"
-    document.getElementById('addContactBtn').onclick = function() {
-      var ua = navigator.userAgent || navigator.vendor || window.opera;
-      if (/android/i.test(ua)) {
-        // Thiết bị Android: sử dụng Intent URL để mở ứng dụng Danh bạ và thêm liên hệ mới
-        window.location.href = 'intent:#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.dir/contact;S.name=Nguy%E1%BB%85n%20An;S.phone=%2B84901234567;S.email=an.nguyen%40abc.com;S.company=C%C3%B4ng%20ty%20ABC;end';
-      } else if (/iPad|iPhone|iPod/i.test(ua)) {
-        // Thiết bị iOS: mở tệp vCard .vcf (tự động gợi ý thêm vào Danh bạ trên iOS)
-        window.location.href = '/nguyen_an.vcf';
+    // Tự động phát hiện nền tảng và xử lý khi bấm nút "Thêm vào Danh bạ"
+    document.getElementById('add-contact-btn').addEventListener('click', function() {
+      var ua = navigator.userAgent || navigator.vendor || "";
+      var isAndroid = /Android/i.test(ua);
+      var isIOS = /iPhone|iPad|iPod/i.test(ua);
+      var isSamsung = /SamsungBrowser/i.test(ua);
+      var isChrome = /Chrome/i.test(ua);
+      if (isAndroid && (isChrome || isSamsung)) {
+        // Trường hợp thiết bị Android dùng Chrome hoặc Samsung Internet:
+        // Mở ứng dụng Danh bạ thông qua Intent, với thông tin được điền sẵn
+        var name = encodeURIComponent("Nguyễn An");
+        var phone = encodeURIComponent("+84901234567");
+        var email = encodeURIComponent("an.nguyen@abc.com");
+        var company = encodeURIComponent("Công ty ABC");
+        var title = encodeURIComponent("Giám đốc");
+        // Chuỗi URL intent:// để mở màn hình thêm liên hệ với các thông tin trên
+        var intentURL = "intent://#Intent;" +
+                        "action=android.intent.action.INSERT;" +
+                        "type=vnd.android.cursor.dir/contact;" +
+                        "S.name=" + name + ";" +
+                        "S.phone=" + phone + ";" +
+                        "S.email=" + email + ";" +
+                        "S.company=" + company + ";" +
+                        "S.job_title=" + title + ";" +
+                        "end";
+        window.location.href = intentURL;
       } else {
-        // Thiết bị khác hoặc không xác định: mặc định mở (hoặc tải) tệp vCard
-        window.location.href = '/nguyen_an.vcf';
+        // Trường hợp thiết bị iOS (Safari) hoặc nền tảng khác:
+        // Mở tệp vCard .vcf để thêm liên hệ
+        window.location.href = "nguyen_an.vcf";
       }
-    };
+    });
   </script>
-
 </body>
 </html>
