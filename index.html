@@ -31,19 +31,42 @@
         .button:hover {
             background-color: #0056b3;
         }
+        .instructions {
+            max-width: 600px;
+            text-align: center;
+            margin: 20px;
+        }
     </style>
     <script>
         // Kiểm tra thiết bị Android
         if (!/Android/i.test(navigator.userAgent)) {
             alert("This feature is only available on Android devices.");
-            document.querySelector('.button').style.display = 'none';
+            document.querySelectorAll('.button, .instructions').forEach(el => el.style.display = 'none');
+        }
+
+        // Mở Google Lens với URL mã QR
+        function openGoogleLens() {
+            const qrUrl = "https://example.com/qr-code.png"; // Thay bằng URL thực tế
+            const lensIntent = `intent://scan/#Intent;package=com.google.android.GoogleLens;scheme=googlelens;S.url=${encodeURIComponent(qrUrl)};end`;
+            try {
+                window.location.href = lensIntent;
+            } catch (e) {
+                alert("Please install Google Lens from Play Store or try another method.");
+            }
         }
     </script>
 </head>
 <body>
     <h3>Add Contact to Phone</h3>
-    <a class="button" href="content://com.android.contacts/contacts?intent=INSERT&name=Nguyen%20Van%20A&phone=0123456789&email=nguyenvana%40example.com&company=Cong%20ty%20ABC&jobtitle=Nhan%20vien">
-        Add Contact
-    </a>
+    <a class="button" onclick="openGoogleLens()">Open Google Lens to Scan QR</a>
+    <div class="instructions">
+        <p><strong>Instructions:</strong></p>
+        <ol>
+            <li>Click "Open Google Lens to Scan QR" to launch Google Lens.</li>
+            <li>If prompted, confirm to load the QR code image from the server.</li>
+            <li>Google Lens will detect the contact info and open the Contacts app.</li>
+            <li>Press "Save" to add the contact.</li>
+        </ol>
+    </div>
 </body>
 </html>
