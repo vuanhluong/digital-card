@@ -1,83 +1,49 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nguyễn An - Danh thiếp</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      text-align: center;
-      padding: 50px 20px;
-    }
-    h1 {
-      margin-bottom: 0.2em;
-      font-size: 2em;
-    }
-    p {
-      margin-top: 0;
-      color: #555;
-      font-size: 1.2em;
-    }
-    a.btn {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 14px 28px;
-      background-color: #007bff;
-      color: #fff;
-      text-decoration: none;
-      font-size: 1em;
-      border-radius: 6px;
-      font-weight: bold;
-    }
-    a.btn:hover {
-      background-color: #0056b3;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Contact to Android</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .button {
+            padding: 15px 30px;
+            font-size: 18px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            margin: 10px;
+            display: inline-block;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        // Kiểm tra thiết bị Android
+        if (!/Android/i.test(navigator.userAgent)) {
+            alert("This feature is only available on Android devices.");
+        }
+    </script>
 </head>
 <body>
-
-  <!-- Hiển thị thông tin cơ bản -->
-  <h1>Nguyễn An</h1>
-  <p>Giám đốc – Công ty ABC</p>
-
-  <!-- Nút hành động -->
-  <a id="add-contact-link" class="btn" target="_blank" rel="noopener noreferrer">Thêm vào Danh bạ</a>
-
-  <script>
-    const ua = navigator.userAgent;
-    const isAndroid = /Android/i.test(ua);
-    const isIOS = /iPhone|iPad|iPod/i.test(ua);
-
-    const name    = encodeURIComponent("Nguyễn An");
-    const phone   = encodeURIComponent("+84901234567");
-    const email   = encodeURIComponent("an.nguyen@abc.com");
-    const company = encodeURIComponent("Công ty ABC");
-    const title   = encodeURIComponent("Giám đốc");
-
-    // Intent URI dành cho Android (Chrome, Samsung Internet)
-    const intentURL =
-      `intent://${phone}/#Intent;` +
-      `action=com.android.contacts.action.SHOW_OR_CREATE_CONTACT;` +
-      `scheme=tel;` +
-      `data=${phone};` +
-      `S.name=${name};` +
-      `S.email=${email};` +
-      `S.android.intent.extra.NAME=${name};` +
-      `S.android.intent.extra.PHONE=${phone};` +
-      `S.android.intent.extra.EMAIL=${email};` +
-      `S.android.intent.extra.COMPANY=${company};` +
-      `S.android.intent.extra.TITLE=${title};` +
-      `end;`;
-
-    // Fallback cho iOS (hoặc thiết bị khác)
-    const vcfURL = "nguyen_an.vcf";
-
-    // Gán link phù hợp
-    const link = document.getElementById("add-contact-link");
-    link.href = isAndroid ? intentURL : vcfURL;
-  </script>
-
+    <a class="button" href="intent://com.android.contacts/#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.dir/contact;S.name=Nguyen%20Van%20A;S.phone=0123456789;S.email=nguyenvana%40example.com;S.company=Cong%20ty%20ABC;S.title=Nhan%20vien;end">
+        Add Contact (Intent)
+    </a>
+    <a class="button" href="data:text/vcard;charset=utf-8,BEGIN:VCARD%0AVERSION:3.0%0AN:Nguyen;Van%20A;;;%0AFN:Nguyen%20Van%20A%0ATEL;TYPE=CELL:0123456789%0AEMAIL;TYPE=WORK:nguyenvana@example.com%0AORG:Cong%20ty%20ABC%0ATITLE:Nhan%20vien%0AEND:VCARD" download="contact.vcf">
+        Add Contact (VCF)
+    </a>
 </body>
 </html>
