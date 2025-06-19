@@ -7,6 +7,7 @@
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -30,15 +31,39 @@
         .button:hover {
             background-color: #0056b3;
         }
+        #qrcode {
+            margin: 20px;
+        }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
         // Kiểm tra thiết bị Android
         if (!/Android/i.test(navigator.userAgent)) {
-            alert("This feature is only available on Android devices.");
+            alert("This feature is optimized for Android devices.");
         }
+
+        // Tạo mã QR khi trang tải
+        window.onload = function() {
+            const vCard = `BEGIN:VCARD
+VERSION:3.0
+N:Nguyen;Van A;;;
+FN:Nguyen Van A
+TEL;TYPE=CELL:0123456789
+EMAIL;TYPE=WORK:nguyenvana@example.com
+ORG:Cong ty ABC
+TITLE:Nhan vien
+END:VCARD`;
+            new QRCode(document.getElementById("qrcode"), {
+                text: vCard,
+                width: 200,
+                height: 200
+            });
+        };
     </script>
 </head>
 <body>
+    <h3>Scan QR Code to Add Contact</h3>
+    <div id="qrcode"></div>
     <a class="button" href="intent://com.android.contacts/#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.dir/contact;S.name=Nguyen%20Van%20A;S.phone=0123456789;S.email=nguyenvana%40example.com;S.company=Cong%20ty%20ABC;S.title=Nhan%20vien;end">
         Add Contact (Intent)
     </a>
