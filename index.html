@@ -31,44 +31,19 @@
         .button:hover {
             background-color: #0056b3;
         }
-        #qrcode {
-            margin: 20px;
-        }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
         // Kiểm tra thiết bị Android
         if (!/Android/i.test(navigator.userAgent)) {
-            alert("This feature is optimized for Android devices.");
+            alert("This feature is only available on Android devices.");
+            document.querySelector('.button').style.display = 'none';
         }
-
-        // Tạo mã QR khi trang tải
-        window.onload = function() {
-            const vCard = `BEGIN:VCARD
-VERSION:3.0
-N:Nguyen;Van A;;;
-FN:Nguyen Van A
-TEL;TYPE=CELL:0123456789
-EMAIL;TYPE=WORK:nguyenvana@example.com
-ORG:Cong ty ABC
-TITLE:Nhan vien
-END:VCARD`;
-            new QRCode(document.getElementById("qrcode"), {
-                text: vCard,
-                width: 200,
-                height: 200
-            });
-        };
     </script>
 </head>
 <body>
-    <h3>Scan QR Code to Add Contact</h3>
-    <div id="qrcode"></div>
-    <a class="button" href="intent://com.android.contacts/#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.dir/contact;S.name=Nguyen%20Van%20A;S.phone=0123456789;S.email=nguyenvana%40example.com;S.company=Cong%20ty%20ABC;S.title=Nhan%20vien;end">
-        Add Contact (Intent)
-    </a>
-    <a class="button" href="data:text/vcard;charset=utf-8,BEGIN:VCARD%0AVERSION:3.0%0AN:Nguyen;Van%20A;;;%0AFN:Nguyen%20Van%20A%0ATEL;TYPE=CELL:0123456789%0AEMAIL;TYPE=WORK:nguyenvana@example.com%0AORG:Cong%20ty%20ABC%0ATITLE:Nhan%20vien%0AEND:VCARD" download="contact.vcf">
-        Add Contact (VCF)
+    <h3>Add Contact to Phone</h3>
+    <a class="button" href="content://com.android.contacts/contacts?intent=INSERT&name=Nguyen%20Van%20A&phone=0123456789&email=nguyenvana%40example.com&company=Cong%20ty%20ABC&jobtitle=Nhan%20vien">
+        Add Contact
     </a>
 </body>
 </html>
